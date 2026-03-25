@@ -19,7 +19,7 @@ def actions(player_hand, player_value, dealer_hand, dealer_show_value, deck, dis
         else:
             player_value = calculateHandValue(player_hand)
             print(f"Player hand value after hit: {player_value}")
-            basicStrat(player_hand, player_value, dealer_hand, dealer_show_value, deck, discard, score)
+            return basicStrat(player_hand, player_value, dealer_hand, dealer_show_value, deck, discard, score)
         
 
     elif decision == "stand":
