@@ -3,7 +3,6 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.stats as st
-from IPython.display import display
 
 # Strategy Dataframes
 basic_data = [['H']*10, ['H']*10, ['H']*10, ['H']*10, ['H']*10, 
@@ -30,11 +29,11 @@ strategy_pair = pd.DataFrame(index=[4,6,8,10,12,14,16,18,20,22],
                              columns=[2,3,4,5,6,7,8,9,10,'A'], data=pair_data)
 
 print('Basic Strategy')
-display(strategy_basic)
+print(strategy_basic)
 print('Ace Strategy')
-display(strategy_ace)
+print(strategy_ace)
 print('Pair Strategy')
-display(strategy_pair)
+print(strategy_pair)
 
 # Classes
 class Player:
@@ -257,13 +256,13 @@ def simulate_hands(num_iterations):
 # Ask how many iterations the user wants
 num_iterations = int(input("Enter the number of iterations to simulate: "))
 
-# Simulate hands and display the results
+# Simulate hands and print the results
 wins, losses, pushes, final_stack = simulate_hands(num_iterations)
 
 
 house_edge = ((10000 - final_stack)/(num_iterations * 100)) * 100
 
-# Display statistics
+# print statistics
 print(f"House Edge:  {house_edge}")
 print(f"After {num_iterations} hands:")
 print(f"Final stack: {final_stack:.2f}")
