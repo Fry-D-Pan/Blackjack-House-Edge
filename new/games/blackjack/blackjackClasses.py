@@ -1,11 +1,13 @@
 import random
 import os
+from .blackjackStragegy import get_strategy_move
 
 class Player:
     #Player Variables
     def __init__(self, balance, playing, simulation_rounds,strategy):
         self.playing = playing
         self.balance = balance
+        self.starting_balance = balance  # Track starting balance for simulation
         self.hands = [[]]  # List of hands (supports multiple splits)
         self.bets = [0]    # List of bets corresponding to each hand
         self.current_hand_index = 0  # Which hand is currently being played
@@ -14,7 +16,9 @@ class Player:
         self.wins = 0
         self.losses = 0
         self.ties = 0
+        self.rounds_played = 0  # Track actual rounds completed
         self.simulation_rounds = simulation_rounds
+        self.current_round = 1  # Start at round 1
         self.strategy = strategy
 
     #Returns the value of a specific hand
@@ -22,6 +26,11 @@ class Player:
         if hand_index < len(self.hands):
             return get_hand_value(self.hands[hand_index])
         return 0
+    
+    def get_strategy_move(self, hand_index, dealer_up_card):
+        if hand_index < len(self.hands):
+            return get_strategy_move(self.hands[hand_index], dealer_up_card, self.strategy)
+        return None
     
     @property
     def hand(self):
@@ -71,20 +80,26 @@ class Deck:
         return deck
 
     def deal_cards(self, hand):
-        if len(self.deck) == 0:
-            self.deck = self.create_deck()
-        #Inital hand for the player and dealer
+        """Deal cards to a hand, reshuffling deck if needed"""
+        # Initial hand for the player and dealer (2 cards)
         if len(hand) == 0:
-            hand.append(self.deck.pop(0))
-            hand.append(self.deck.pop(0))
-        #counting hits and double downs for one more card
+            hand.append(self._pop_card())
+            hand.append(self._pop_card())
+        # Counting hits and double downs for one more card
         else:
-            hand.append(self.deck.pop(0))
-        #Check to see if shoe is needed
+            hand.append(self._pop_card())
+        
+        # Check to see if shoe marker was dealt
         if 'Shoe' in hand: 
             hand.remove('Shoe')
             self.shoe = True
-            hand.append(self.deck.pop(0))
+            hand.append(self._pop_card())
+    
+    def _pop_card(self):
+        """Pop a card from deck, reshuffling if empty"""
+        if len(self.deck) == 0:
+            self.deck = self.create_deck()
+        return self.deck.pop(0)
         
 
 #Supporting Functions

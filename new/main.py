@@ -1,5 +1,5 @@
-from games.blackjack.blackjackGame import blackjackGamePlay
-from new.games.blackjack.blackjackClasses import clear_terminal
+from games.blackjack.blackjackGame import blackjackGamePlay, blackjackGameSim
+from games.blackjack.blackjackClasses import clear_terminal
 
 
 #Options menu function
@@ -39,7 +39,7 @@ def options():
         simMode = input("Enter what number simulation you want to see\n1) Blackjack\n2) Crapes\n3) Roulette\n4) Go back.\n")
         if simMode == "1":
             clear_terminal()
-            #blackjackSim()
+            blackjackGameSim()
             quit()
         elif simMode == "2":
             clear_terminal()
