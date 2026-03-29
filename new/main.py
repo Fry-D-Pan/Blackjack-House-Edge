@@ -1,5 +1,5 @@
 from games.blackjack.blackjackGame import blackjackGamePlay
-from games.blackjack.classes import clear_terminal
+from new.games.blackjack.blackjackClasses import clear_terminal
 
 
 #Options menu function

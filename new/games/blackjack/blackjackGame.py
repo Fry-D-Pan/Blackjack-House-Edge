@@ -1,4 +1,4 @@
-from . import classes
+from . import blackjackClasses
 
 
 # Instructions
@@ -46,7 +46,7 @@ def play_all_hands(player, dealer, deck):
         hand_index += 1
     
     # All hands complete - now dealer's turn
-    classes.clear_terminal()
+    blackjackClasses.clear_terminal()
     print("\n=== All hands complete. Dealer's turn ===")
     dealer_play(dealer, player, deck)
     get_results(player, dealer, deck)
@@ -58,7 +58,7 @@ def play_hand(player, dealer, deck, hand_index):
     current_bet = player.bets[hand_index]
     hand_value = player.get_hand_value(hand_index)
     
-    classes.clear_terminal()
+    blackjackClasses.clear_terminal()
     
     # Display all hands if multiple exist
     if len(player.hands) > 1:
@@ -69,7 +69,7 @@ def play_hand(player, dealer, deck, hand_index):
     else:
         print(f"Your hand: {current_hand} (Value: {hand_value})")
     
-    print(f"\nDealer's hand: [{dealer.hand[0]}, ('Hidden Card')] (Value: {classes.get_hand_value([dealer.hand[0]])})\n")
+    print(f"\nDealer's hand: [{dealer.hand[0]}, ('Hidden Card')] (Value: {blackjackClasses.get_hand_value([dealer.hand[0]])})\n")
     
     if player.playing:
         # Determine available options
@@ -152,6 +152,7 @@ def dealer_play(dealer, player, deck):
     if dealer.hand_value > 21:
         print("Dealer busts! All remaining player hands win!\n")
         player.balance += sum(player.bets) * 2  # Pay out all remaining bets
+        player.wins += len(player.hands)  # Increment wins for all hands
         end_game(player, dealer, deck)
     else:
         print("Dealer stands.\n")
@@ -163,14 +164,18 @@ def get_results(player, dealer, deck):
         print(f"Dealer's hand: {dealer.hand} (Value: {dealer.hand_value})\n")
         if hand_value > 21:
             print(f"Hand {i + 1} busted. You lose ${player.bets[i]}.\n")
+            player.losses += 1
         elif hand_value > dealer.hand_value:
             print(f"Hand {i + 1} wins! You win ${player.bets[i] * 2}.\n")
             player.balance += player.bets[i] * 2
+            player.wins += 1
         elif hand_value == dealer.hand_value:
             print(f"Hand {i + 1} pushes. Your bet of ${player.bets[i]} is returned.\n")
             player.balance += player.bets[i]
+            player.ties += 1
         else:
             print(f"Hand {i + 1} loses. You lose ${player.bets[i]}.\n")
+            player.losses += 1
     end_game(player, dealer, deck)
 
 def check_blackjack(dealer, player):
@@ -216,11 +221,9 @@ def end_game(player, dealer, deck):
 def blackjackGamePlay():
     print("Welcome to Blackjack!")
 
-
     #Display the instructions for the game
     #instructions()
    
-
     #Setup the game
     decks = input("Enter the amount of decks you want to play with (1-8): ")
     if decks.isdigit() and 1 <= int(decks) <= 8:
@@ -236,9 +239,35 @@ def blackjackGamePlay():
         balance = 1000
 
     
-    player = classes.Player(balance, playing=True)
-    dealer = classes.Dealer()
-    deck = classes.Deck(deck_num)
+    player = blackjackClasses.Player(balance, playing=True)
+    dealer = blackjackClasses.Dealer()
+    deck = blackjackClasses.Deck(deck_num)
     decisions(player, dealer, deck)
 
+def blackjackGameSim():
+    print("Welcome to Blackjack Simulation!")
     
+    
+    decks = input("Enter the amount of decks you want to play with (1-8): ")
+    if decks.isdigit() and 1 <= int(decks) <= 8:
+        deck_num = int(decks)
+    else:
+        print("Invalid input. Defaulting to 6 decks.")
+        deck_num = 6
+    money = input("Enter the amount of money you want to start with(Whole positive number): ")
+    if money.isdigit() and int(money) > 0:
+        balance = int(money)
+    else:
+        print("Invalid input. Defaulting to $1000.")
+        balance = 1000
+    simulation_rounds = input("Enter the number of simulation rounds to run (Whole positive number): ")
+    if simulation_rounds.isdigit() and int(simulation_rounds) > 0:
+        simulation_rounds = int(simulation_rounds)
+    else:
+        print("Invalid input. Defaulting to 1000 rounds.")
+        simulation_rounds = 1000
+    
+    player = blackjackClasses.Player(balance, playing=False , simulation_rounds=simulation_rounds, strategy="")
+    dealer = blackjackClasses.Dealer()
+    deck = blackjackClasses.Deck(deck_num)
+    decisions(player, dealer, deck)

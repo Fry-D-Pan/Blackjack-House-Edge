@@ -3,12 +3,19 @@ import os
 
 class Player:
     #Player Variables
-    def __init__(self, balance, playing):
+    def __init__(self, balance, playing, simulation_rounds,strategy):
         self.playing = playing
         self.balance = balance
         self.hands = [[]]  # List of hands (supports multiple splits)
         self.bets = [0]    # List of bets corresponding to each hand
         self.current_hand_index = 0  # Which hand is currently being played
+
+        #Simulation tracking variables
+        self.wins = 0
+        self.losses = 0
+        self.ties = 0
+        self.simulation_rounds = simulation_rounds
+        self.strategy = strategy
 
     #Returns the value of a specific hand
     def get_hand_value(self, hand_index):
@@ -49,6 +56,7 @@ class Deck:
         self.deck_num = deck_num
         self.deck = self.create_deck()
         self.shoe = False
+        
 
     #Deck Functions
     # Creates a standard deck of 52 cards and multiplies it by the number of decks specified    
