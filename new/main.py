@@ -1,15 +1,6 @@
-import os
-from new.games.blackjack.blackjackGame import blackjackGamePlay
+from games.blackjack.blackjackGame import blackjackGamePlay
+from games.blackjack.classes import clear_terminal
 
-
-def clear_terminal():
-    # For Windows
-    if os.name == 'nt':
-        _ = os.system('cls')
-    # For macOS and Linux (posix)
-    else:
-        _ = os.system('clear')
-# Call the function to clear the screen
 
 #Options menu function
 def options():
