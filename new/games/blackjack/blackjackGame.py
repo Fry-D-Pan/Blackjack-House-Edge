@@ -340,13 +340,17 @@ def blackjackGameSim():
         simulation_rounds = 1000
     
     strategy = input("Enter the strategy you want to use for the simulation \n 1)basic " \
-    "\n 2)random \n 3)custom: ")
+    "\n 2)agressive(Hit until 15) \n 3)passive(Hit until 11) \n 4)dealer(Hit until 17) \n 5)random: ")
     if strategy == "1":
         strategy = "basic"
     elif strategy == "2":
-        strategy = "random"
+        strategy = "aggressive"
     elif strategy == "3":
-        strategy = "custom"
+        strategy = "passive"
+    elif strategy == "4":
+        strategy = "dealer"
+    elif strategy == "5":
+        strategy = "random"
     else:
         print("Invalid input. Defaulting to basic strategy.")
         strategy = "basic"
